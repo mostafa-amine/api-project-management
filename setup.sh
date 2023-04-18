@@ -3,9 +3,9 @@
 mv .env.example .env
 
 if [ $? -eq 0 ]; then
-  echo -e "\e[32m\xE2\x9C\x85 .env file created\e[0m"
+  echo -e "\e[32m\xE2\x9C\x85 .env.example file moved to .env\e[0m"
 else
-  echo -e "\e[31m\xE2\x9D\x8C .env file not created\e[0m"
+  echo -e "\e[31m\xE2\x9D\x8C .env.example file not moved to .env\e[0m"
 fi
 
 composer install
