@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\RoleResource;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -36,14 +38,12 @@ class AuthController extends Controller
 
         return response()->json([
             'token' => $authToken,
-            'user' => $user
+            'user' => (new UserResource($user))
         ]);
     }
 
     public function logout(Request $request)
     {
-
-
         // Find the token from the request
         $accessToken = $request->bearerToken();
         // Find the token in the database

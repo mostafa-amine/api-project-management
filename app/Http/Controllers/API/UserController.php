@@ -6,6 +6,7 @@ use Exception;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Redis;
 
@@ -18,20 +19,16 @@ class UserController extends Controller
 
         $users = User::all();
 
-        return response()->json([
-            'users' => $users
-        ]);
+        return UserResource::collection($users);
     }
 
     public function show(User $user)
     {
         // Check if the user has the abilty to see a specific user
         abort_if(Gate::denies('show', User::class), 401, 'Unauthorized');
-        // Get user roles
-        $roles = $user->roles()->first();
+
         return response()->json([
-            'user' => $user->toArray(),
-            'roles' => $roles->only('name')
+            'user' => (new UserResource($user))
         ]);
     }
 
