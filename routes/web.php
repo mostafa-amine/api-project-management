@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
 
@@ -15,12 +16,4 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    $fruits = new Collection([
-        ['name' => 'Apple', 'color' => 'Red', 'price' => 0.5],
-        ['name' => 'Banana', 'color' => 'Yellow', 'price' => 0.3],
-        ['name' => 'Orange', 'color' => 'Orange', 'price' => 0.4],
-        ['name' => 'Grapes', 'color' => 'Purple', 'price' => 0.8],
-    ]);
-
-    print_r($fruits);
 });

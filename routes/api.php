@@ -25,13 +25,11 @@ Route::prefix('/users')->middleware('auth:sanctum')->group(function () {
     Route::get('/{user}', [UserController::class, 'show']);
 
     // Create a user
-    Route::get('/create', [UserController::class, 'create']);
     Route::post('/', [UserController::class, 'store']);
 
-    // Edit a user
-    Route::get('/{id}/edit', [UserController::class, 'edit']);
-    Route::put('/{id}', [UserController::class, 'update']);
+    // Update a user
+    Route::put('/{user}', [UserController::class, 'update']);
 
     // Delete a user
-    Route::put('/{id}', [UserController::class, 'destroy']);
+    Route::delete('/{user}', [UserController::class, 'destroy']);
 });
