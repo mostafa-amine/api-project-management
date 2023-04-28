@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\API;
 
-use Exception;
-use App\Models\User;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 
@@ -28,7 +27,7 @@ class UserController extends Controller
         abort_if(Gate::denies('show', User::class), 401, 'Unauthorized');
 
         return response()->json([
-            'user' => (new UserResource($user))
+            'user' => (new UserResource($user)),
         ]);
     }
 
@@ -41,19 +40,19 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|min:5',
             'email' => 'required|email|unique:users,email',
-            'roles' => 'required|array'
+            'roles' => 'required|array',
         ]);
         // store the user in the database
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make("password")
+            'password' => Hash::make('password'),
         ]);
         // assign role to te user
         $user->syncRoles($request->roles);
 
         return response()->json([
-            'user' => (new UserResource($user))
+            'user' => (new UserResource($user)),
         ]);
     }
 
@@ -63,18 +62,18 @@ class UserController extends Controller
         $request->validate([
             'name' => 'min:5',
             'email' => 'email',
-            'roles' => 'array'
+            'roles' => 'array',
         ]);
         // update the user
         $user->update([
             'name' => $request->name,
-            'email' => $request->email
+            'email' => $request->email,
         ]);
         // update user roles
         $user->syncRoles($request->roles);
 
         return response()->json([
-            'user' => (new UserResource($user))
+            'user' => (new UserResource($user)),
         ]);
     }
 
@@ -83,7 +82,7 @@ class UserController extends Controller
         $user->delete();
 
         return response()->json([
-            'message' => 'User deleted'
+            'message' => 'User deleted',
         ]);
     }
 }

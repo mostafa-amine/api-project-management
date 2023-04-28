@@ -3,11 +3,9 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\RoleResource;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\PersonalAccessToken;
 
 class AuthController extends Controller
@@ -16,19 +14,19 @@ class AuthController extends Controller
     {
         $request->validate([
             'email' => 'required|email',
-            'password' => 'required'
+            'password' => 'required',
         ]);
 
         $credentials = $request->only(['email', 'password']);
 
-        if (!auth()->attempt($credentials)) {
+        if (! auth()->attempt($credentials)) {
             return response()->json([
                 'message' => 'The given data was invalid',
                 'errors' => [
                     'password' => [
-                        'Invalid credentials'
-                    ]
-                ]
+                        'Invalid credentials',
+                    ],
+                ],
             ], 422);
         }
 
@@ -38,7 +36,7 @@ class AuthController extends Controller
 
         return response()->json([
             'token' => $authToken,
-            'user' => (new UserResource($user))
+            'user' => (new UserResource($user)),
         ]);
     }
 
@@ -52,7 +50,7 @@ class AuthController extends Controller
         $token->delete();
 
         return response()->json([
-            'message' => 'User logged out'
+            'message' => 'User logged out',
         ]);
     }
 }
