@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Organization;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -36,5 +37,17 @@ class DatabaseSeeder extends Seeder
 
         $admin->assignRole('admin');
         $directeur->assignRole('directeur');
+
+        // Organisations seeding
+        for ($i = 0; $i < 100; $i++) {
+            Organization::create([
+                'name' => fake()->company(),
+                'address' => fake()->address(),
+                'contactPhone' => fake()->phoneNumber(),
+                'contactName' => fake()->userName(),
+                'contactEmail' => fake()->companyEmail(),
+                'website' => fake()->url()
+            ]);
+        }
     }
 }
