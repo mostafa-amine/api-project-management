@@ -5,9 +5,12 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use Hamcrest\BaseMatcher;
+use Illuminate\Contracts\Cache\Store;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -39,15 +42,26 @@ class UserController extends Controller
         // Validate the request
         $request->validate([
             'name' => 'required|min:5',
+            'prenom' => 'required|min:5',
+            'photo' => 'required|image',
+            'phone_number' => 'required|numeric',
             'email' => 'required|email|unique:users,email',
-            'roles' => 'required|array',
+            'roles' => 'required',
         ]);
+
+        // Retrieve the file path
+        $path = Storage::putFile('images', $request->file('photo'));
+
         // store the user in the database
         $user = User::create([
             'name' => $request->name,
+            'prenom' => $request->prenom,
+            'photo' => basename($path),
+            'phone_number' => $request->phone_number,
             'email' => $request->email,
             'password' => Hash::make('password'),
         ]);
+
         // assign role to te user
         $user->syncRoles($request->roles);
 
