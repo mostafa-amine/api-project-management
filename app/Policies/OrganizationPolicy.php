@@ -2,11 +2,9 @@
 
 namespace App\Policies;
 
-use App\Models\Organization;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
-class OrganisationPolicy
+class OrganizationPolicy
 {
     /**
      * Determine whether the user can view any models.
