@@ -16,7 +16,7 @@ class OrganismeController extends Controller
     {
         try {
             // check if the user has the ability to see all organisations
-            abort_if(Gate::denies('showAny', Organization::class), 401, 'Unauthorized');
+            abort_if(Gate::denies('viewAny', Organization::class), 401, 'Unauthorized');
         } catch (Exception $e) {
             return response()->json([
                 'message' => 'You are unauthorized to do this action'
