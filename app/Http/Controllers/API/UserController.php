@@ -44,7 +44,7 @@ class UserController extends Controller
             'name' => 'required|min:5',
             'prenom' => 'required|min:5',
             'photo' => 'required|image',
-            'phone_number' => 'required|numeric',
+            'phone_number' => 'required',
             'email' => 'required|email|unique:users,email',
             'roles' => 'required',
         ]);
