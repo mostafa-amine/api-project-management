@@ -1,9 +1,11 @@
 <?php
 
-use App\Http\Controllers\API\AuthController;
-use App\Http\Controllers\API\OrganismeController;
-use App\Http\Controllers\API\UserController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\UserController;
+use App\Http\Controllers\API\OrganismeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,5 +54,11 @@ Route::prefix('/organisations')
 Route::prefix('projects')
     ->middleware('auth:sanctum')
     ->group(function () {
-
+        Route::get('/', [ProjectController::class, 'index']);
     });
+
+
+Route::get('/refresh-database', function () {
+    Artisan::call('migrate:fresh --seed');
+    return response('Database refreshed and seeded successfully');
+});
