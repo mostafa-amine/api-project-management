@@ -20,35 +20,37 @@ use Illuminate\Support\Facades\Route;
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout']);
 
+// Users End points
 Route::prefix('/users')
     ->middleware('auth:sanctum')
     ->group(function () {
         Route::get('/', [UserController::class, 'index']);
         Route::get('/{user}', [UserController::class, 'show']);
-
         // Create a user
         Route::post('/', [UserController::class, 'store']);
-
         // Update a user
         Route::put('/{user}', [UserController::class, 'update']);
-
         // Delete a user
         Route::delete('/{user}', [UserController::class, 'destroy']);
     });
 
-
+// Organisations Endpoint
 Route::prefix('/organisations')
     ->middleware('auth:sanctum')
     ->group(function () {
         Route::get('/', [OrganismeController::class, 'index']);
         Route::get('/{organisation}', [OrganismeController::class, 'show']);
-
         // Create an organisation
         Route::post('/', [OrganismeController::class, 'store']);
-
         // Update an organisation
         Route::put('/{organisation}', [OrganismeController::class, 'update']);
-
         // Delete an organisation
         Route::delete('/{organisation}', [OrganismeController::class, 'destroy']);
+    });
+
+// Projects End points
+Route::prefix('projects')
+    ->middleware('auth:sanctum')
+    ->group(function () {
+
     });

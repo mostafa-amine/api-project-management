@@ -5,8 +5,10 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use Exception;
 use Hamcrest\BaseMatcher;
 use Illuminate\Contracts\Cache\Store;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
@@ -24,11 +26,17 @@ class UserController extends Controller
         return UserResource::collection($users);
     }
 
-    public function show(User $user)
+    public function show($id)
     {
         // Check if the user has the abilty to see a specific user
         abort_if(Gate::denies('show', User::class), 401, 'Unauthorized');
-
+        try{
+            $user = User::findOrFail($id);
+        } catch(ModelNotFoundException $e){
+            return response()->json([
+                'message' => "The user not found"
+            ], 404);
+        }
         return response()->json([
             'user' => (new UserResource($user)),
         ]);
