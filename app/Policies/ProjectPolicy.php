@@ -13,7 +13,6 @@ class ProjectPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
     }
 
     /**
@@ -21,7 +20,7 @@ class ProjectPolicy
      */
     public function view(User $user, Project $project): bool
     {
-        //
+        return $user->hasRole(['directeur', 'secretaire']) ? true : false;
     }
 
     /**
@@ -29,7 +28,7 @@ class ProjectPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->hasRole('secretaire') ? true : false;
     }
 
     /**
@@ -37,15 +36,19 @@ class ProjectPolicy
      */
     public function update(User $user, Project $project): bool
     {
-        //
+        return $user->hasRole(['directeur', 'secretaire']) ? true : false;
     }
+
+    /**
+     * Determiner si l'utilisateur Modifier montant projet
+    */
 
     /**
      * Determine whether the user can delete the model.
      */
     public function delete(User $user, Project $project): bool
     {
-        //
+        return $user->hasRole('directeur') ? true : false;
     }
 
     /**

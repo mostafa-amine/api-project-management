@@ -19,8 +19,7 @@ use App\Http\Controllers\API\OrganismeController;
 */
 
 // Authentifcation routes
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/logout', [AuthController::class, 'logout']);
+
 
 // Users End points
 Route::prefix('/users')
