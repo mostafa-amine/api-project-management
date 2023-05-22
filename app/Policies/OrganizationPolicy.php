@@ -18,7 +18,7 @@ class OrganizationPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Organization $organization): bool
+    public function view(User $user): bool
     {
         return $user->hasRole(['secretaire', 'directeur', 'admin']) ? true : false;
     }

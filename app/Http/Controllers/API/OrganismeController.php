@@ -10,6 +10,7 @@ use App\Policies\OrganisationPolicy;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Resources\OrganizationResource;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Contracts\Cache\Store;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Storage;
 
@@ -102,19 +103,20 @@ class OrganismeController extends Controller
             'name' => 'required|max:255',
             'address' => 'required|max:255',
             'contactPhone' => 'required',
-            'cover' => 'image',
+            'cover' => '',
             'contactEmail' => 'required|email',
             'website' => 'required|url'
         ]);
 
-
-        $path = Storage::putFile('images', $request->file('cover'));
+        if ($request->file('cover') !== null) {
+            $path = Storage::putFile('images', $request->file('cover'));
+        }
 
         $organisation->update([
             'name' => $request->name,
             'address' => $request->address,
             'contactPhone' => $request->contactPhone,
-            'cover' => basename($path),
+            'cover' => isset($path) ? basename($path) : $organisation->cover,
             'contactEmail' => $request->contactEmail,
             'website' => $request->website,
         ]);
