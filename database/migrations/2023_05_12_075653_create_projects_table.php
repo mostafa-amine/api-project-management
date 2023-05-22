@@ -15,10 +15,17 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->longText('description');
-            $table->string('montant');
+            $table->string('budget');
+            $table->float('progress');
+
             // Relationships
-            $table->foreignId('organization_id')->constrained('organizations');
-            $table->timestamps();
+            $table->foreignId('organization_id')->constrained('organizations')->cascadeOnDelete();
+
+            // change to start_date / end_date
+            $table->date('start_date');
+            $table->date('end_date');
+
+            $table->softDeletes();
         });
     }
 

@@ -3,11 +3,9 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
-use Exception;
-use Hamcrest\BaseMatcher;
-use Illuminate\Contracts\Cache\Store;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -30,9 +28,10 @@ class UserController extends Controller
     {
         // Check if the user has the abilty to see a specific user
         abort_if(Gate::denies('show', User::class), 401, 'Unauthorized');
-        try{
+
+        try {
             $user = User::findOrFail($id);
-        } catch(ModelNotFoundException $e){
+        } catch (ModelNotFoundException $e) {
             return response()->json([
                 'message' => "The user not found"
             ], 404);
@@ -42,20 +41,10 @@ class UserController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
         // Check if the user has the abilty to see a specific user
         abort_if(Gate::denies('show', User::class), 401, 'Unauthorized');
-
-        // Validate the request
-        $request->validate([
-            'name' => 'required|min:5',
-            'prenom' => 'required|min:5',
-            'photo' => 'required|image',
-            'phone_number' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'roles' => 'required',
-        ]);
 
         // Retrieve the file path
         $path = Storage::putFile('images', $request->file('photo'));
@@ -78,19 +67,19 @@ class UserController extends Controller
         ]);
     }
 
-    public function update(Request $request, User $user)
+    public function update(UserRequest $request, User $user)
     {
-        // Validate the request
-        $request->validate([
-            'name' => 'min:5',
-            'email' => 'email',
-            'roles' => 'array',
-        ]);
+        // Retrieve the file path
+        $path = Storage::putFile('images', $request->file('photo'));
+
         // update the user
         $user->update([
-            'name' => $request->name,
+            'nom' => $request->nom,
+            'prenom' => $request->prenom,
+            'photo' => basename($path),
             'email' => $request->email,
         ]);
+
         // update user roles
         $user->syncRoles($request->roles);
 

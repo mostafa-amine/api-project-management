@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Livrable extends Model
 {
     use HasFactory;
+
+    public $fillable = [
+        'libelle',
+        'description',
+        'documentPath',
+        'phase_id'
+    ];
 }

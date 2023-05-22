@@ -2,9 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
-use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\UserController;
+use App\Http\Controllers\Api\ProjectController;
 use App\Http\Controllers\API\OrganismeController;
 
 /*
@@ -17,9 +17,6 @@ use App\Http\Controllers\API\OrganismeController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-
-// Authentifcation routes
-
 
 // Users End points
 Route::prefix('/users')
@@ -41,11 +38,8 @@ Route::prefix('/organisations')
     ->group(function () {
         Route::get('/', [OrganismeController::class, 'index']);
         Route::get('/{organisation}', [OrganismeController::class, 'show']);
-        // Create an organisation
         Route::post('/', [OrganismeController::class, 'store']);
-        // Update an organisation
         Route::put('/{organisation}', [OrganismeController::class, 'update']);
-        // Delete an organisation
         Route::delete('/{organisation}', [OrganismeController::class, 'destroy']);
     });
 
@@ -54,6 +48,10 @@ Route::prefix('projects')
     ->middleware('auth:sanctum')
     ->group(function () {
         Route::get('/', [ProjectController::class, 'index']);
+        Route::get('/{id}', [ProjectController::class, 'show']);
+        Route::post('/', [ProjectController::class, 'store']);
+        Route::put('/{id}', [ProjectController::class, 'update']);
+        Route::delete('/{id}', [ProjectController::class, 'destroy']);
     });
 
 

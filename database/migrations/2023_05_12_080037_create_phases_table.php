@@ -19,6 +19,9 @@ return new class extends Migration
             $table->boolean('etat_realisation');
             $table->boolean('etat_facturation');
             $table->boolean('etat_paiement');
+
+            // Relationships
+            $table->foreignId('prject_id')->constrained('projects')->cascadeOnDelete();
             $table->timestamps();
         });
     }

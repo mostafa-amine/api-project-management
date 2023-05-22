@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Models\User;
+use App\Models\Organization;
 
 class OrganizationPolicy
 {
@@ -11,7 +12,7 @@ class OrganizationPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole(['secretaire', 'directeur']) ? true : false;
+        return $user->hasRole(['secretaire', 'directeur', 'admin']) ? true : false;
     }
 
     /**
@@ -19,7 +20,7 @@ class OrganizationPolicy
      */
     public function view(User $user, Organization $organization): bool
     {
-        return $user->hasRole(['secretaire', 'directeur']) ? true : false;
+        return $user->hasRole(['secretaire', 'directeur', 'admin']) ? true : false;
     }
 
     /**
@@ -27,15 +28,15 @@ class OrganizationPolicy
      */
     public function store(User $user): bool
     {
-        return $user->hasRole('secretaire') ? true : false;
+        return $user->hasRole(['secretaire', 'admin']) ? true : false;
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Organization $organization): bool
+    public function update(User $user): bool
     {
-        return $user->hasRole(['secretaire', 'directeur']) ? true : false;
+        return $user->hasRole(['secretaire', 'directeur', 'admin']) ? true : false;
     }
 
     /**
@@ -43,7 +44,7 @@ class OrganizationPolicy
      */
     public function delete(User $user): bool
     {
-        return $user->hasRole('directeur') ? true : false;
+        return $user->hasRole(['directeur', 'admin']) ? true : false;
     }
 
     /**

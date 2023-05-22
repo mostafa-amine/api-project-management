@@ -6,13 +6,13 @@ use App\Models\User;
 
 class UserPolicy
 {
-    public function showAny()
+    public function showAny(User $user)
     {
-        return auth()->user()->hasRole(['admin', 'directeur']) ? true : false;
+        return $user->hasRole(['admin', 'directeur']) ? true : false;
     }
 
-    public function show()
+    public function show(User $user)
     {
-        return auth()->user()->hasRole(['admin']) ? true : false;
+        return $user->hasRole('admin') ? true : false;
     }
 }

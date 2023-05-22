@@ -14,9 +14,9 @@ class Organization extends Model
         'name',
         'address',
         'contactPhone',
-        'contactName',
         'contactEmail',
-        'website',
+        'cover',
+        'website'
     ];
 
     public function projects(): HasMany

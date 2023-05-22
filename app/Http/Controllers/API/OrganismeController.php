@@ -9,6 +9,9 @@ use App\Http\Controllers\Controller;
 use App\Policies\OrganisationPolicy;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Resources\OrganizationResource;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Storage;
 
 class OrganismeController extends Controller
 {
@@ -17,7 +20,7 @@ class OrganismeController extends Controller
         try {
             // check if the user has the ability to see all organisations
             abort_if(Gate::denies('viewAny', Organization::class), 401, 'Unauthorized');
-        } catch (Exception $e) {
+        } catch (AuthorizationException $e) {
             return response()->json([
                 'message' => 'You are unauthorized to do this action'
             ], 401);
@@ -36,7 +39,7 @@ class OrganismeController extends Controller
         try {
             // check if the user has the ability to see all organisations
             abort_if(Gate::denies('view', Organization::class), 401, 'Unauthorized');
-        } catch (Exception $e) {
+        } catch (AuthorizationException $e) {
             return response()->json([
                 'message' => 'You are unauthorized to do this action'
             ], 401);
@@ -51,7 +54,7 @@ class OrganismeController extends Controller
         try {
             // check if the user has the ability to see all organisations
             abort_if(Gate::denies('store', Organization::class), 401, 'Unauthorized');
-        } catch (Exception $e) {
+        } catch (AuthorizationException $e) {
             return response()->json([
                 'message' => 'You are unauthorized to do this action'
             ], 401);
@@ -61,17 +64,19 @@ class OrganismeController extends Controller
         $request->validate([
             'name' => 'required|max:255',
             'address' => 'required|max:255',
-            'contactPhone' => 'required|numeric',
-            'contactName' => 'required',
+            'contactPhone' => 'required',
+            'cover' => 'required|image',
             'contactEmail' => 'required|email',
             'website' => 'required|url'
         ]);
+
+        $path = Storage::putFile('images', $request->file('cover'));
 
         $organisation = Organization::create([
             'name' => $request->name,
             'address' => $request->address,
             'contactPhone' => $request->contactPhone,
-            'contactName' => $request->contactName,
+            'cover' => basename($path),
             'contactEmail' => $request->contactEmail,
             'website' => $request->website,
         ]);
@@ -87,26 +92,29 @@ class OrganismeController extends Controller
         try {
             // check if the user has the ability to see all organisations
             abort_if(Gate::denies('update', Organization::class), 401, 'Unauthorized');
-        } catch (Exception $e) {
+        } catch (AuthorizationException $e) {
             return response()->json([
-                'message' => 'You are unauthorized to do this action'
+                'message' => "You are unauthorized to do this action"
             ], 401);
         }
 
         $request->validate([
             'name' => 'required|max:255',
             'address' => 'required|max:255',
-            'contactPhone' => 'required|numeric',
-            'contactName' => 'required',
+            'contactPhone' => 'required',
+            'cover' => 'image',
             'contactEmail' => 'required|email',
             'website' => 'required|url'
         ]);
+
+
+        $path = Storage::putFile('images', $request->file('cover'));
 
         $organisation->update([
             'name' => $request->name,
             'address' => $request->address,
             'contactPhone' => $request->contactPhone,
-            'contactName' => $request->contactName,
+            'cover' => basename($path),
             'contactEmail' => $request->contactEmail,
             'website' => $request->website,
         ]);
@@ -123,7 +131,7 @@ class OrganismeController extends Controller
         try {
             // check if the user has the ability to see all organisations
             abort_if(Gate::denies('delete', Organization::class), 401, 'Unauthorized');
-        } catch (Exception $e) {
+        } catch (AuthorizationException $e) {
             return response()->json([
                 'message' => 'You are unauthorized to do this action'
             ], 401);
@@ -132,7 +140,7 @@ class OrganismeController extends Controller
         try {
             $organisation = Organization::findOrFail($id);
             $organisation->delete();
-        } catch (Exception $e) {
+        } catch (ModelNotFoundException $e) {
             return response()->json([
                 'message' => "The organisation not found to be deleted"
             ], 404);

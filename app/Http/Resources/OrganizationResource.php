@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 class OrganizationResource extends JsonResource
 {
@@ -19,7 +20,7 @@ class OrganizationResource extends JsonResource
             'name' => $this->name,
             'address' => $this->address,
             'contactPhone' => $this->contactPhone,
-            'contactName' => $this->contactName,
+            'cover' => Storage::disk('images')->url($this->cover),
             'contactEmail' => $this->contactEmail,
             'website' => $this->website,
         ];
