@@ -20,6 +20,7 @@ return new class extends Migration
 
             // Relationships
             $table->foreignId('organization_id')->constrained('organizations')->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
 
             // change to start_date / end_date
             $table->date('start_date');

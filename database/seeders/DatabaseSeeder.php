@@ -4,11 +4,12 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-use App\Models\Organization;
 use App\Models\User;
+use App\Models\Project;
+use App\Models\Organization;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -114,5 +115,18 @@ class DatabaseSeeder extends Seeder
             "website"  => "https://www.kpcapital.com",
             "cover" => "https://cdn.logojoy.com/wp-content/uploads/2018/05/01104823/1454.png"
         ]);
+
+        for ($i = 0; $i < 4; $i++) {
+            Project::create([
+                'name' => fake()->company(),
+                'description' => fake()->paragraph(3),
+                'budget' => 1200,
+                'start_date' => now(),
+                'end_date' => now(),
+                'user_id' => 4,
+                'progress' => 0,
+                'organization_id' => $i + 1,
+            ]);
+        }
     }
 }

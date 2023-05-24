@@ -18,7 +18,8 @@ class Project extends Model
         'budget',
         'organization_id',
         'start_date',
-        'end_date'
+        'end_date',
+        'progress',
     ];
 
     public $timestamps = false;
@@ -28,8 +29,13 @@ class Project extends Model
         return $this->hasMany(Phase::class);
     }
 
-    public function organisation(): BelongsTo
+    public function organisation()
     {
-        return $this->belongsTo(Organization::class);
+        return $this->belongsTo(Organization::class, 'organization_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }
