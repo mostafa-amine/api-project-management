@@ -5,11 +5,15 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use App\Models\User;
+use App\Models\Phase;
 use App\Models\Project;
+use App\Models\Livrable;
+use Illuminate\Support\Str;
 use App\Models\Organization;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class DatabaseSeeder extends Seeder
 {
@@ -79,6 +83,22 @@ class DatabaseSeeder extends Seeder
         $chef_projet->assignRole('chef_projet');
         $comptable->assignRole('comptable');
 
+        // Create Normal Employees
+        for ($i = 0; $i < 10; $i++) {
+            $first_name = fake()->firstName();
+            $last_name = fake()->lastName();
+            $full_name = Str::lower(Str::slug($last_name, '_') . Str::slug($first_name, '_'));
+
+            User::create([
+                'name' => $last_name,
+                'prenom' => $first_name,
+                'photo' => Storage::disk('images')->url('avatar.png'),
+                'phone_number' => fake()->phoneNumber(),
+                'email' => $full_name . '@gmail.com',
+                'password' => Hash::make('password'),
+            ]);
+        }
+
         // Organisations seeding
         Organization::create([
             "address" =>  "Casablanca",
@@ -116,6 +136,7 @@ class DatabaseSeeder extends Seeder
             "cover" => "https://cdn.logojoy.com/wp-content/uploads/2018/05/01104823/1454.png"
         ]);
 
+        // Project seeding
         for ($i = 0; $i < 4; $i++) {
             Project::create([
                 'name' => fake()->company(),
@@ -128,5 +149,31 @@ class DatabaseSeeder extends Seeder
                 'organization_id' => $i + 1,
             ]);
         }
+
+        // Phases seeding
+
+        $randomPhases = [
+            'Create Database',
+            'Setup Dependencies',
+            'Develop CI script',
+            'Deploy The Application'
+        ];
+        for ($i = 0; $i < 4; $i++) {
+            Phase::create([
+                "code" => "CRP00" . $i + 1,
+                "name" => $randomPhases[$i],
+                "description" => "Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere, vitae corrupti. Quidem ducimus rerum quibusdam beatae officiis non animi commodi. Eum repellat corrupti error ullam exercitationem impedit fugiat fugit rerum?",
+                "start_date" => now(),
+                "end_date" => now(),
+                "budget_percentage" => 20,
+                "status" => 'Ongoing',
+                'project_id' => 1
+            ]);
+        }
+
+        // Assign Phases to employers
+
+        // Livrables seeding
+
     }
 }

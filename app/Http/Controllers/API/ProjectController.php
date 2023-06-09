@@ -6,6 +6,7 @@ use App\Models\Project;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProjectResource;
+use App\Models\Phase;
 use Illuminate\Support\Facades\Gate;
 
 class ProjectController extends Controller
@@ -39,5 +40,15 @@ class ProjectController extends Controller
     public function destroy()
     {
         abort_if(Gate::denies('delete', Project::class), 401, 'Unauthorized');
+    }
+
+    public function showPhases(Request $request)
+    {
+        $phases = Phase::all();
+        dd($phases);
+    }
+
+    public function showPhase()
+    {
     }
 }

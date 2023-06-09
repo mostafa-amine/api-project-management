@@ -12,13 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('livrables', function (Blueprint $table) {
-            $table->id();
+            $table->string('code')->primary();
             $table->string('libelle');
             $table->longText('description');
-            $table->string('documentPath');
+            $table->string('filePath');
+            $table->string('phase_id');
 
             // Relationships
-            $table->foreignId('phase_id')->constrained('phases');
+            $table->foreign('phase_id')->references('code')->on('phases');
             $table->timestamps();
         });
     }

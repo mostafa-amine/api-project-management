@@ -12,13 +12,23 @@ class Phase extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'code';
+
+    public $incrementing = false;
+
+    protected $keyType = 'string';
+
+    public $timestamps = false;
+
     protected $fillables = [
-        'libelle',
+        'code',
+        'name',
         'description',
-        'montant',
-        'etat_realisation',
-        'etat_facturation',
-        'etat_paiement',
+        'start_date',
+        'end_date',
+        'budget_percentage',
+        'status',
+        'project_id'
     ];
 
     public function project(): BelongsTo
@@ -29,5 +39,10 @@ class Phase extends Model
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class);
+    }
+
+    public function livrables()
+    {
+        return $this->hasMany(Livrable::class);
     }
 }

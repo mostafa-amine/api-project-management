@@ -24,11 +24,8 @@ Route::prefix('/users')
     ->group(function () {
         Route::get('/', [UserController::class, 'index']);
         Route::get('/{user}', [UserController::class, 'show']);
-        // Create a user
         Route::post('/', [UserController::class, 'store']);
-        // Update a user
         Route::put('/{user}', [UserController::class, 'update']);
-        // Delete a user
         Route::delete('/{user}', [UserController::class, 'destroy']);
     });
 
@@ -52,6 +49,9 @@ Route::prefix('projects')
         Route::post('/', [ProjectController::class, 'store']);
         Route::put('/{id}', [ProjectController::class, 'update']);
         Route::delete('/{id}', [ProjectController::class, 'destroy']);
+        // Phases
+        Route::get('/{id}/phases', [ProjectController::class, 'showPhases']);
+        Route::get('/{id}/{phase:code}', [ProjectController::class, 'showPhase']);
     });
 
 

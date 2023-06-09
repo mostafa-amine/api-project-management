@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Project;
+use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Database\Eloquent\Collection;
