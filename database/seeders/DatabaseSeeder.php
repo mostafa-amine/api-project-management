@@ -90,8 +90,8 @@ class DatabaseSeeder extends Seeder
             $full_name = Str::lower(Str::slug($last_name, '_') . Str::slug($first_name, '_'));
 
             User::create([
-                'name' => $last_name,
-                'prenom' => $first_name,
+                'last_name' => $last_name,
+                'first_name' => $first_name,
                 'photo' => Storage::disk('images')->url('avatar.png'),
                 'phone_number' => fake()->phoneNumber(),
                 'email' => $full_name . '@gmail.com',
@@ -170,10 +170,5 @@ class DatabaseSeeder extends Seeder
                 'project_id' => 1
             ]);
         }
-
-        // Assign Phases to employers
-
-        // Livrables seeding
-
     }
 }

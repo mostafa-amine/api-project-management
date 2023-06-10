@@ -51,8 +51,8 @@ class UserController extends Controller
 
         // store the user in the database
         $user = User::create([
-            'name' => $request->name,
-            'prenom' => $request->prenom,
+            'first_name' => $request->name,
+            'last_name' => $request->prenom,
             'photo' => basename($path),
             'phone_number' => $request->phone_number,
             'email' => $request->email,
@@ -74,8 +74,8 @@ class UserController extends Controller
 
         // update the user
         $user->update([
-            'nom' => $request->nom,
-            'prenom' => $request->prenom,
+            'first_name' => $request->nom,
+            'last_name' => $request->prenom,
             'photo' => basename($path),
             'email' => $request->email,
         ]);
